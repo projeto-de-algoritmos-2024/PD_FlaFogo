@@ -80,14 +80,24 @@ void mergeSort(int *endTime, int * startTime, int *profit, int l, int r)
     }
 }
 
-
-int find(int *endTime, int begin, int startTime)
+int binarySearch(int *endTime, int left, int right, int startTime)
 {
-    for(int i = begin; i >= 0; i--)
+    int result = -1; 
+    while (left <= right) 
     {
-        if(endTime[i] <= startTime) return i+1;
+        int mid = left + (right - left) / 2;
+
+        if (endTime[mid] <= startTime) 
+        {
+            result = mid + 1;  // Guardamos a posição válida
+            left = mid + 1;    // Tentamos encontrar uma melhor opção
+        } 
+        else
+        {
+            right = mid - 1;   // Reduzimos o espaço de busca
+        }
     }
-    return -2;
+    return result;
 }
 
 int optimize(int *endTime, int *startTime, int* profit, int vetorSize)
@@ -96,13 +106,14 @@ int optimize(int *endTime, int *startTime, int* profit, int vetorSize)
     int aux;
     job[0] = 0, job[1] = profit[0];
 
-    for(int i = 2; i <= vetorSize; i++)
+    for (int i = 2; i <= vetorSize; i++)
     {
-        aux = find(endTime, i - 1, startTime[i - 1]);
-        if(aux == -1)
+        aux = binarySearch(endTime, 0, i - 2, startTime[i - 1]);
+        
+        if (aux == -1)
         {
             job[i] = (profit[i - 1] > job[i - 1]) ? profit[i - 1] : job[i-1]; 
-        }
+        } 
         else
         {
             job[i] = (profit[i - 1] + job[aux] > job[i - 1]) ? profit[i - 1] + job[aux] : job[i-1]; 
@@ -111,10 +122,9 @@ int optimize(int *endTime, int *startTime, int* profit, int vetorSize)
 
     int result = job[vetorSize];
     free(job);
-
     return result;
-
 }
+
 
 int jobScheduling (int* startTime, int startTimeSize, int* endTime, int endTimeSize, int* profit, int profitSize) 
 {
@@ -123,13 +133,13 @@ int jobScheduling (int* startTime, int startTimeSize, int* endTime, int endTimeS
     return optimize(endTime,startTime,profit,profitSize);
 }
 
-int main ()
-{
+// int main ()
+// {
 
-    int startTime[] = {1,2,3,3};
-    int endtime[] = {3,4,5,6};
-    int profit[] = {50,10,40,70};
-    int teste = jobScheduling(startTime,4,endtime,4,profit,4);
-    printf("%d",teste);
-    return 0;
-}
+//     int startTime[] = {1,2,3,3};
+//     int endtime[] = {3,4,5,6};
+//     int profit[] = {50,10,40,70};
+//     int teste = jobScheduling(startTime,4,endtime,4,profit,4);
+//     printf("%d",teste);
+//     return 0;
+// }
