@@ -1,6 +1,6 @@
 # Exercicios LeetCode
 
-**Número da Lista**:<br>
+**Número da Lista**: 65<br>
 **Conteúdo da Disciplina**: Programação Dinâmica<br>
 
 ## Alunos
