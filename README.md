@@ -13,7 +13,7 @@
 Resolução de questões disponíveis na plataforma LeetCode, contemplando exercícios de níveis médio e difícil de dificuldade. O objetivo é abordar o conteúdo lecionado em sala de aula de forma simples e intuitiva, com códigos legiveis e de fácil compreensão
 
 ## Link da Gravação
-
+https://youtu.be/rFWtK3bQHCM
 ## Questões
 |Numeração| Exercicio | Dificuldade|
 | ---- | ---- | ----- |
