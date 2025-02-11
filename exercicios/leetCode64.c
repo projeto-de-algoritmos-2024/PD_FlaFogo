@@ -55,7 +55,7 @@ void bellmanFord(node *nodes, int qtdNodes, int **matriz, int lastNodeWeight)
     }
 }
 
-int minPathSum(int** grid, int gridSize, int* gridColSize) 
+int minPathSum(int grid[][3], int gridSize, int* gridColSize) 
 {   
     if(gridSize == 1 && gridColSize[0] == 1)
     {
@@ -79,9 +79,18 @@ int minPathSum(int** grid, int gridSize, int* gridColSize)
     {   
         currentNode++;
         for (int j = 0; j < gridColSize[0] - 1; j++)
-        {
-            addNode(currentNode, currentNode + 1, grid[i][j], nodes); // Conecta o nó atual com o da direita 
-            addNode(currentNode + 1,currentNode, grid[i][j + 1], nodes); // Conecta o nó da direita com o atual 
+        {   
+            if(currentNode == qtdNodes - 2 )
+            {
+                addNode(currentNode, currentNode + 1, grid[i][j] + grid[i][j + 1], nodes); // Conecta o nó atual com o da direita 
+                addNode(currentNode + 1,currentNode, grid[i][j + 1] + grid[i][j], nodes); // Conecta o nó da direita com o atual
+            }
+            else
+            {
+                addNode(currentNode, currentNode + 1, grid[i][j], nodes); // Conecta o nó atual com o da direita 
+                addNode(currentNode + 1,currentNode, grid[i][j + 1], nodes); // Conecta o nó da direita com o atual 
+            }
+
             currentNode++;
         }
     }
@@ -91,21 +100,29 @@ int minPathSum(int** grid, int gridSize, int* gridColSize)
     for(int i = 0; i < gridSize - 1; i++)
     {   
         for (int j = 0; j < gridColSize[0]; j++)
-        {
-            addNode(currentNode, currentNode + gridColSize[0], grid[i][j], nodes);
-            addNode(currentNode + gridColSize[0], currentNode, grid[i + 1][j], nodes);
+        {   
+            if(currentNode == qtdNodes - 1 - gridColSize[0])
+            {
+                addNode(currentNode, currentNode + gridColSize[0], grid[i][j] + grid[i + 1][j], nodes);
+                addNode(currentNode + gridColSize[0], currentNode, grid[i + 1][j] + grid[i][j], nodes);
+            }
+            else
+            {
+                addNode(currentNode, currentNode + gridColSize[0], grid[i][j], nodes);
+                addNode(currentNode + gridColSize[0], currentNode, grid[i + 1][j], nodes);
+            }
             currentNode++;
         }
     }
 
     // Print para teste
-    // for(int i = 0; i < qtdNodes; i++)
-    // {   
-    //     printf("no: %d\n",i);
-    //     for(edge *current = nodes[i].edges; current != NULL; current = current -> prox)
-    //         printf("peso: %d Destino: %d\n",current-> weight ,current->destiny );
+    for(int i = 0; i < qtdNodes; i++)
+    {   
+        printf("no: %d\n",i);
+        for(edge *current = nodes[i].edges; current != NULL; current = current -> prox)
+            printf("peso: %d Destino: %d\n",current-> weight ,current->destiny );
         
-    // }
+    }
 
     // Matriz auxiliar do Bellman-Ford
     int **matriz = malloc(sizeof(int *) * qtdNodes);
@@ -124,24 +141,24 @@ int minPathSum(int** grid, int gridSize, int* gridColSize)
     bellmanFord(nodes, qtdNodes, matriz, grid[gridSize - 1][gridColSize[0] - 1]);
     
     // Print para teste
-    for(int i = 0; i < qtdNodes; i++)
-    {
-        for(int j = 0; j < qtdNodes; j++)
-        printf("%d ",matriz[i][j]);
+    // for(int i = 0; i < qtdNodes; i++)
+    // {
+    //     for(int j = 0; j < qtdNodes; j++)
+    //     printf("%d ",matriz[i][j]);
         
-        printf("\n");
-    }
+    //     printf("\n");
+    // }
 
     int result = matriz[qtdNodes - 1][0];
-    return result + grid[gridSize - 1][gridColSize[0] - 1] ;
+    return result;
 }
 
-// int main()
-// {
-//     int grid[3][3] = {{1,3,1}, {1,5,1}, {4,2,1}};
-//     int gridSize = 3;
-//     int gridColSize[3] = {3,3,3};
-//     int result = minPathSum(grid,gridSize, gridColSize);
-//     printf("result : %d\n", result);
-//     return 0;
-// }
+int main()
+{
+    int grid[3][3] = {{1,3,1}, {1,5,1}, {4,2,1}};
+    int gridSize = 3;
+    int gridColSize[3] = {3,3,3};
+    int result = minPathSum(grid,gridSize, gridColSize);
+    printf("result : %d\n", result);
+    return 0;
+}
